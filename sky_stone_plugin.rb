@@ -21,7 +21,7 @@ class SkyStonePlugin
     @cart_routes = SkyStone::CartRoutes.new(self)
   end
 
-  def cmd(player, arguments)
+  def cmd(player, *arguments)
 
     if arguments.length > 0
       subcommand = arguments.shift
