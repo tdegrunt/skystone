@@ -13,8 +13,8 @@ class SkyStonePlugin
     @plugin.setup self
     @plugin.broadcast "Loaded 'SkyStone' plugin"
 
-    player_command('skystone', 'Skystone') do |me, *args|
-      player_command(me, args)
+    public_player_command('skystone', 'Skystone') do |me, *args|
+      cmd(me, args)
     end
 
     @storage_cart_system = SkyStone::StorageCartSystem.new(self)
