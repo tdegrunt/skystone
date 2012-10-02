@@ -47,6 +47,7 @@ module SkyStone
 
           if player = cart.get_passenger
             player_holds_item = string_from_block(player.get_item_in_hand.get_data)
+
             #debug "Player detected, holding: #{player_holds_item} and moving #{moving_direction}"
 
             direction_hint = find_and_return_direction(control_block, player_holds_item)
@@ -219,9 +220,14 @@ module SkyStone
     def cmd(player, arguments)
       command = arguments.shift
       case command.to_sym
+      when nil
+        player.msg "Your current route: #{player_route[player.name]}"
       when :white
         player_route[player.name] = "35:0"
         player.msg "Set your route to white"
+      when :orange
+        player_route[player.name] = "35:1"
+        player.msg "Set your route to orange"
       else
         plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
       end
