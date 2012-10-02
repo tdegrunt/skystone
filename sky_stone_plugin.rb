@@ -13,7 +13,7 @@ class SkyStonePlugin
     @plugin.setup self
     @plugin.broadcast "Loaded 'SkyStone' plugin"
 
-    public_command('skystone', 'Skystone', '/skystone ...') do |me, *args|
+    player_command('skystone', 'Skystone') do |me, *args|
       player_command(me, args)
     end
 
@@ -21,16 +21,16 @@ class SkyStonePlugin
     @cart_routes = SkyStone::CartRoutes.new(self)
   end
 
-  def player_command(player, arguments)
+  def cmd(player, arguments)
 
     if arguments.length > 0
       subcommand = arguments.shift
 
       case subcommand.to_sym
       when :route
-        @cart_routes.player_command(player, arguments)
+        @cart_routes.cmd(player, arguments)
       when :storage
-        @storage_cart_system.player_command(player, arguments)
+        @storage_cart_system.cmd(player, arguments)
       end
     end
   end

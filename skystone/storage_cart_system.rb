@@ -29,7 +29,7 @@ module SkyStone
     end
 
     # Fired when a player types /scs
-    def player_command(player, arguments)
+    def cmd(player, arguments)
       plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
     end
 
