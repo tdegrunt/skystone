@@ -247,7 +247,7 @@ module SkyStone
     end
 
     def debug(text)
-      @plugin.server.broadcast_message "StorageCartSystem: #{text}"
+      @plugin.server.broadcast_message "CartRoutes: #{text}"
     end
   end
 end
