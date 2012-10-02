@@ -40,8 +40,8 @@ class SkyStonePlugin
   end
 
   def force_reload!
-   #load 'skystone/plugin'
-   #load 'skystone/storage_cart_system'
-   #load 'skystone/cart_routes'
+    load './skystone/plugin'
+    load './skystone/storage_cart_system'
+    load './skystone/cart_routes'
   end
 end
