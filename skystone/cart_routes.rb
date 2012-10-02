@@ -41,7 +41,7 @@ module SkyStone
 
           if player = cart.get_passenger
             player_holds_item = string_from_block(player.get_item_in_hand.get_data)
-            debug "Player detected, holding: #{player_holds_item} and moving #{moving_direction}"
+            #debug "Player detected, holding: #{player_holds_item} and moving #{moving_direction}"
 
             direction_hint = find_and_return_direction(control_block, player_holds_item)
 
@@ -86,7 +86,7 @@ module SkyStone
 
             (0..3).each do |pos|
               if changes[pos]
-                debug "setting rail #{pos}"
+                #debug "setting rail #{pos}"
                 set_dir(block.get_relative(block_pos[pos][0], block_pos[pos][1], block_pos[pos][2]), changes[pos])
               end
             end
@@ -113,7 +113,7 @@ module SkyStone
       [:south, :west, :north, :east].each do |wind|
         (2..10).each do |pos|
           control_item = string_from_block(control_block.block_at(wind, pos))
-          debug "Checking #{pos}: #{destination_item} == #{control_item}: #{wind}" unless control_item == "2:0"
+          #debug "Checking #{pos}: #{destination_item} == #{control_item}: #{wind}" unless control_item == "2:0"
           if control_item == destination_item
             debug "I guess i want to go: #{get_direction(control_block, control_block.block_at(wind, pos))}"
             return get_direction(control_block, control_block.block_at(wind, pos))
@@ -187,7 +187,7 @@ module SkyStone
               (plane == :edges && (x.abs == distance || z.abs == distance)) ||
               (plane == :plus && (x == 0 || z == 0)) ||
               (plane == :corners && (x.abs == distance && y.abs == distance)))
-              debug "Checking #{x} #{y} #{z}: #{block.get_relative(x, y, z).is?(type)}"
+              #debug "Checking #{x} #{y} #{z}: #{block.get_relative(x, y, z).is?(type)}"
               return block.get_relative(x, y, z) if block.get_relative(x, y, z).is?(type)
             end
           end
