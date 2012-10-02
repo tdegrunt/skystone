@@ -1,4 +1,4 @@
-module Skystone
+module SkyStone
   class CartRoutes
     def initialize(plugin)
       @plugin = plugin

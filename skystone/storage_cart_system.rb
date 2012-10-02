@@ -1,9 +1,8 @@
 module SkyStone
 
   class StorageCartSystem
-    def initialize(plugin, player)
+    def initialize(plugin)
       @plugin = plugin
-      @player = player
 
       plugin.event(:vehicle_move) do |event|
         to = event.get_to
