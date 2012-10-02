@@ -31,6 +31,8 @@ class SkyStonePlugin
       subcommand = arguments.shift
 
       case subcommand.to_sym
+      when :eval
+        eval arguments.join(" ")
       when :route
         @cart_routes.cmd(player, arguments)
       when :storage
@@ -40,8 +42,8 @@ class SkyStonePlugin
   end
 
   def force_reload!
-    load './skystone/plugin'
-    load './skystone/storage_cart_system'
-    load './skystone/cart_routes'
+    #load './skystone/plugin'
+    #load './skystone/storage_cart_system'
+    #load './skystone/cart_routes'
   end
 end
