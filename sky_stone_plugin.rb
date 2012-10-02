@@ -1,4 +1,5 @@
 require 'singleton'
+$:.unshift File.dirname(__FILE__)
 
 require_relative 'skystone/plugin'
 require_relative 'skystone/storage_cart_system'
