@@ -1,5 +1,5 @@
 require 'singleton'
-#$:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require_relative 'skystone/plugin'
 require_relative 'skystone/storage_cart_system'
@@ -14,7 +14,7 @@ class SkyStonePlugin
 
     @plugin = SkyStone::Plugin.instance
     @plugin.setup self
-    @plugin.broadcast "Loaded 'SkyStone' plugin: #{$:.}"
+    @plugin.broadcast "Loaded 'SkyStone' plugin"
 
     public_player_command('skystone', 'Skystone', "/skystone ...") do |me, *args|
       cmd(me, args)
@@ -27,7 +27,6 @@ class SkyStonePlugin
   private
 
   def cmd(player, arguments)
-
     if arguments.length > 0
       subcommand = arguments.shift
 
@@ -41,9 +40,9 @@ class SkyStonePlugin
   end
 
   def force_reload!
-##    load 'skystone/plugin'
- #   load 'skystone/storage_cart_system'
- #   load 'skystone/cart_routes'
+   load 'skystone/plugin'
+   load 'skystone/storage_cart_system'
+   load 'skystone/cart_routes'
   end
 
 end
