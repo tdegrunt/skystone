@@ -13,7 +13,7 @@ class SkyStonePlugin
     @plugin.setup self
     @plugin.broadcast "Loaded 'SkyStone' plugin"
 
-    @storage_cart_system = SkyStone::StorageCartSystem.new(@plugin)
-    @cart_routes = SkyStone::CartRoutes.new(@plugin)
+    @storage_cart_system = SkyStone::StorageCartSystem.new(self)
+    @cart_routes = SkyStone::CartRoutes.new(self)
   end
 end
