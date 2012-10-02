@@ -13,7 +13,7 @@ class SkyStonePlugin
     @plugin.setup self
     @plugin.broadcast "Loaded 'SkyStone' plugin"
 
-    plugin.public_command('skystone', 'Skystone', '/skystone ...') do |me, *args|
+    public_command('skystone', 'Skystone', '/skystone ...') do |me, *args|
       command(me, args)
     end
 
