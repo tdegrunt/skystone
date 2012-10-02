@@ -217,10 +217,21 @@ module SkyStone
 
     # Fired when a player types /skystone route
     def cmd(player, arguments)
-      plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
+      command = arguments.shift
+      case command.to_sym
+      when :white
+        player_route[player.name] = "35:0"
+        player.msg "Set your route to white"
+      else
+        plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
+      end
     end
 
     private
+
+    def player_route
+      @player_route ||= Hash.new("35:0")
+    end
 
     def plugin
       @plugin ||= Plugin.instance
