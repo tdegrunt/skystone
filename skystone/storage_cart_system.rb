@@ -15,10 +15,6 @@ module SkyStone
         end
       end
 
-      # Register our command structure
-      plugin.public_command('scs', 'Storage Cart System', '/scs ...') do |me, *args|
-        command(me, args)
-      end
     end
 
     private
