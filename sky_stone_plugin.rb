@@ -1,9 +1,9 @@
 require 'singleton'
-:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
-require 'skystone/plugin'
-require 'skystone/storage_cart_system'
-require 'skystone/cart_routes'
+require_relative 'skystone/plugin'
+require_relative 'skystone/storage_cart_system'
+require_relative 'skystone/cart_routes'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
@@ -14,7 +14,7 @@ class SkyStonePlugin
 
     @plugin = SkyStone::Plugin.instance
     @plugin.setup self
-    @plugin.broadcast "Loaded 'SkyStone' plugin"
+    @plugin.broadcast "Loaded 'SkyStone' plugin: #{$:.}"
 
     public_player_command('skystone', 'Skystone', "/skystone ...") do |me, *args|
       cmd(me, args)
