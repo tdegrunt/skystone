@@ -219,13 +219,13 @@ module SkyStone
     # Fired when a player types /skystone route
     def cmd(player, arguments)
       command = arguments.shift
-      case command.to_sym
+      case command
       when nil
         player.msg "Your current route: #{player_route[player.name]}"
-      when :white
+      when "white"
         player_route[player.name] = "35:0"
         player.msg "Set your route to white"
-      when :orange
+      when "orange"
         player_route[player.name] = "35:1"
         player.msg "Set your route to orange"
       else
