@@ -1,8 +1,6 @@
 module SkyStone
   class CartRoutes
-    def initialize(plugin)
-      @plugin = plugin
-
+    def initialize
       plugin.event(:vehicle_move) do |event|
         to = event.get_to
         from = event.get_from
@@ -216,8 +214,12 @@ module SkyStone
 
     private
 
+    def plugin
+      @plugin ||= Plugin.new
+    end
+
     def debug(text)
-      @plugin.server.broadcast_message "CartRoutes: #{text}"
+      plugin.server.broadcast_message "CartRoutes: #{text}"
     end
   end
 end
