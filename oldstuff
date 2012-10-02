@@ -7,7 +7,7 @@ class StorageCartSystem
     plugin.event(:vehicle_move) do |event|
       to = event.get_to
       from = event.get_from
-      if to.get_x.to_i != from.get_x.to_i || to.get_z.to_i != from.get_z.to_i
+      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
         check(to.get_block, event.get_vehicle)
       end
     end
@@ -76,7 +76,7 @@ class CartRoutes
       to = event.get_to
       from = event.get_from
 
-      if to.get_x.to_i != from.get_x.to_i || to.get_z.to_i != from.get_z.to_i
+      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
         check(to.get_block, event.get_vehicle, from.get_block, get_direction(from, to))
       end
     end
@@ -121,8 +121,8 @@ class CartRoutes
           # x y z
           rails_positions = {}
           rails_positions[:north] = [[0, 0, -2], [0, 0, -4], [-2, 0, -4], [-2, 0, -2]]
-          rails_positions[:east] = [[2, 0, 0], [4, 0, 0], [4, 0, -2], [2, 0, -2]]
           rails_positions[:south] = [[0, 0, 2], [0, 0, 4], [2, 0, 4], [2, 0, 2]]
+          rails_positions[:east] = [[2, 0, 0], [4, 0, 0], [4, 0, -2], [2, 0, -2]]
           rails_positions[:west] = [[-2, 0, 0], [-4, 0, 0], [-4, 0, 2], [-2, 0, 2]]
 
           moves = {}
