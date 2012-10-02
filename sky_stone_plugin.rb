@@ -44,5 +44,4 @@ class SkyStonePlugin
    #load 'skystone/storage_cart_system'
    #load 'skystone/cart_routes'
   end
-
 end

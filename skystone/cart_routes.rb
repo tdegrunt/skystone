@@ -209,6 +209,13 @@ module SkyStone
       end
     end
 
+    # Fired when a player types /skystone route
+    def cmd(player, arguments)
+      plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
+    end
+
+    private
+
     def debug(text)
       @plugin.server.broadcast_message "CartRoutes: #{text}"
     end
