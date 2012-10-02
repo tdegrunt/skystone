@@ -21,7 +21,7 @@ class SkyStonePlugin
     end
 
     @storage_cart_system = SkyStone::StorageCartSystem.new(self)
-    @cart_routes = SkyStone::CartRoutes.new(self)
+    @cart_routes = SkyStone::CartRoutes.new
   end
 
   private
