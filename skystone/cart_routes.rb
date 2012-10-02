@@ -223,7 +223,7 @@ module SkyStone
     private
 
     def plugin
-      @plugin ||= Plugin.new
+      @plugin ||= Plugin.instance
     end
 
     def debug(text)

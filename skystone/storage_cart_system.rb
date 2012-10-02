@@ -34,7 +34,7 @@ module SkyStone
     end
 
     def plugin
-      @plugin ||= Plugin.new
+      @plugin ||= Plugin.instance
     end
   end
 end
