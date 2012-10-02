@@ -1,9 +1,9 @@
 require 'singleton'
-$:.unshift File.dirname(__FILE__)
+:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
-require_relative 'skystone/plugin'
-require_relative 'skystone/storage_cart_system'
-require_relative 'skystone/cart_routes'
+require 'skystone/plugin'
+require 'skystone/storage_cart_system'
+require 'skystone/cart_routes'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
