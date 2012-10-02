@@ -10,6 +10,14 @@ module SkyStone
         end
       end
 
+      plugin.event(:player_interact) do |event|
+        if event.respond_to?(:get_clicked_block)
+          if event.get_clicked_block.is?(:stone_button)
+            event.player.msg "You clicked a stone button!"
+          end
+        end
+      end
+
     end
 
     def get_direction(from, to)
