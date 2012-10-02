@@ -9,11 +9,13 @@ class SkyStonePlugin
   description 'SkyStone', 0.1
 
   def on_enable
+    force_reload!
+
     @plugin = SkyStone::Plugin.instance
     @plugin.setup self
     @plugin.broadcast "Loaded 'SkyStone' plugin"
 
-    public_player_command('skystone', 'Skystone') do |me, *args|
+    public_player_command('skystone', 'Skystone', "/skystone ...") do |me, *args|
       cmd(me, args)
     end
 
@@ -21,7 +23,9 @@ class SkyStonePlugin
     @cart_routes = SkyStone::CartRoutes.new(self)
   end
 
-  def cmd(player, *arguments)
+  private
+
+  def cmd(player, arguments)
 
     if arguments.length > 0
       subcommand = arguments.shift
@@ -33,6 +37,12 @@ class SkyStonePlugin
         @storage_cart_system.cmd(player, arguments)
       end
     end
+  end
+
+  def force_reload!
+    load 'skystone/plugin'
+    load 'skystone/storage_cart_system'
+    load 'skystone/cart_routes'
   end
 
 end
