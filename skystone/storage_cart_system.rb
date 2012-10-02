@@ -1,4 +1,7 @@
+require_relative 'transceiver'
+
 module SkyStone
+  class StorageCartSystem
     def initialize(plugin)
       @plugin = plugin
 
@@ -6,8 +9,8 @@ module SkyStone
       plugin.event(:vehicle_move) do |event|
         moved_a_whole_block(event) do |from, to|
           # Per block type we can check if this event is applicable, and if so, process the event.
-          if transceiver = Transceiver.me?(to.get_block)
-            transceiver.process_verhicle_move(event)
+          if transceiver = SkyStone::Transceiver.me?(to.get_block)
+           transceiver.process_vehicle_move(event)
           end
         end
       end
@@ -24,7 +27,7 @@ module SkyStone
     def moved_a_whole_block(event)
       to = event.get_to
       from = event.get_from
-      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i
+      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
         yield from, to
       end
     end

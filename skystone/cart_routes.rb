@@ -104,50 +104,13 @@ module SkyStone
       end
     end
 
-
-    def translate_wind_to(wind, wut = :real)
-      if wut == :beta
-        case
-        when wind == :north
-          :east
-        when wind == :south
-          :west
-        when wind == :east
-          :south
-        when wind == :west
-          :north
-        end
-      else
-        case
-        when wind == :north
-          :west
-        when wind == :south
-          :east
-        when wind == :east
-          :north
-        when wind == :west
-          :south
-        end
-      end
-    end
-
     def set_rails_direction(rails, direction)
-      # num = case
-      # when direction == :north
-      #   9
-      # when direction == :south
-      #   10
-      # when direction == :east
-      #   8
-      # when directoin == :west
-      #   7
-      # end
       rails.set_data direction
     end
 
     def find_and_return_direction(control_block, destination_item)
       #control_block.
-      wind = [:south, :west, :north, :east].each do |wind|
+      [:south, :west, :north, :east].each do |wind|
         (2..10).each do |pos|
           control_item = string_from_block(control_block.block_at(wind, pos))
           debug "Checking #{pos}: #{destination_item} == #{control_item}: #{wind}" unless control_item == "2:0"

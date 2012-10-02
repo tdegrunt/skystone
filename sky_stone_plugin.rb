@@ -1,5 +1,5 @@
 require 'singleton'
-#require_relative 'skystone/transceiver'
+
 require_relative 'skystone/plugin'
 require_relative 'skystone/storage_cart_system'
 require_relative 'skystone/cart_routes'
