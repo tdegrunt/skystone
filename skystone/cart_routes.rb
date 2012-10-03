@@ -1,6 +1,7 @@
 module SkyStone
   class CartRoutes
-    def initialize
+    def initialize(plugin)
+      @plugin = plugin
       plugin.event(:vehicle_move) do |event|
         to = event.get_to
         from = event.get_from
@@ -11,9 +12,17 @@ module SkyStone
       end
 
       plugin.event(:player_interact) do |event|
-        if event.respond_to?(:get_clicked_block)
+        if event.respond_to?(:get_clicked_block) && event.get_clicked_block
           if event.get_clicked_block.is?(:stone_button)
-            event.player.msg "You clicked a stone button!"
+            button = event.get_clicked_block.get_state.get_data
+            #event.player.msg "button: #{button}"
+            attached = event.get_clicked_block.get_relative(button.get_attached_face)
+
+            if attached.block_at(:down).is?(:lapis_block)
+              player_route[event.player.name] = string_from_block(attached)
+              event.player.msg "You've clicked a route button - setting your route to #{string_from_block(attached)}"
+              #event.player.msg "it's attached to: #{string_from_block(attached)}"
+            end
           end
         end
       end
@@ -48,9 +57,10 @@ module SkyStone
           if player = cart.get_passenger
             player_holds_item = string_from_block(player.get_item_in_hand.get_data)
 
-            #debug "Player detected, holding: #{player_holds_item} and moving #{moving_direction}"
-
             direction_hint = find_and_return_direction(control_block, player_holds_item)
+            unless direction_hint
+              direction_hint = find_and_return_direction(control_block, player_route[player.name])
+            end
 
             # Array locations are:
             # 32
@@ -240,7 +250,7 @@ module SkyStone
     end
 
     def plugin
-      @plugin ||= Plugin.instance
+      @plugin
     end
 
     def debug(text)

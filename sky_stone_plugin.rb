@@ -20,8 +20,9 @@ class SkyStonePlugin
       cmd(me, args)
     end
 
+    # Somehow I need this self or my server chokes - Plugin.instance doesn't do the trick
     @storage_cart_system = SkyStone::StorageCartSystem.new(self)
-    @cart_routes = SkyStone::CartRoutes.new
+    @cart_routes = SkyStone::CartRoutes.new(self)
   end
 
   private
