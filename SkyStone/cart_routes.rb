@@ -247,11 +247,11 @@ module SkyStone
       case command
       when nil
         player.msg "Your current destination: #{destination_name(player_route[player.name])}/'#{destination_name(player_route[player.name], true)}'"
-      when config.router.destinations.has_key?(command)
+      when Hash.new(config.get!('carts.router.destinations',{})).has_key?(command)
         player_route[player.name] = command
         player.msg "Your new destination is '#{destination_name(command)}'/'#{destination_name(command, true)}'"
       else
-        plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
+        debug "Look ma! #{player.name} sent me command #{arguments.first}"
       end
     end
 
