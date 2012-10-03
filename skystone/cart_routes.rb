@@ -31,7 +31,8 @@ module SkyStone
         player = event.get_vehicle.get_passenger
         if player_route[player.name]
           player.msg "Reset your route (was: #{player_route[player.name]})"
-          player_route[player.name] = false
+          # FIXME - Needs defaults - ie plugin config
+          player_route[player.name] = "35:0"
         end
       end
 
