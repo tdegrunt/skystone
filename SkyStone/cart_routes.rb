@@ -27,7 +27,7 @@ module SkyStone
             if attached.block_at(:down).is?(:lapis_block)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
-              event.player.msg "You've clicked a route button - setting your route to #{destination_name(destination)}"
+              event.player.msg "You've selected destination: '#{destination_name(destination)}'/'#{destination_name(default_route, true)}'"
             end
           end
         end
@@ -36,7 +36,7 @@ module SkyStone
       plugin.event(:vehicle_exit) do |event|
         player = event.get_vehicle.get_passenger
         if player_route[player.name] != default_route
-          player.msg "Reset your route to #{destination_name(default_route)} (was: #{destination_name(player_route[player.name])})"
+          player.msg "Reset your route to '#{destination_name(default_route)}'/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(default_route, true)}')"
           player_route[player.name] = default_route
         end
       end
@@ -246,13 +246,10 @@ module SkyStone
       command = arguments.shift
       case command
       when nil
-        player.msg "Your current route: #{player_route[player.name]}"
-      when "white"
-        player_route[player.name] = "35:0"
-        player.msg "Set your route to white"
-      when "orange"
-        player_route[player.name] = "35:1"
-        player.msg "Set your route to orange"
+        player.msg "Your current destination: #{destination_name(player_route[player.name])}/'#{destination_name(default_route, true)}'"
+      when config.router.destinations.has_key?(command)
+        player_route[player.name] = command
+        player.msg "Your new destination is '#{destination_name(command)}'/'#{destination_name(default_route, true)}'"
       else
         plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
       end
@@ -276,8 +273,12 @@ module SkyStone
       plugin.config
     end
 
-    def destination_name(destination)
-      config.get!("carts.router.destinations.#{destination}", destination)
+    def destination_name(destination, short = false)
+      if short
+        config.get!("carts.router.destinations.#{destination}.short", destination)
+      else
+        config.get!("carts.router.destinations.#{destination}.name", destination)
+      end
     end
 
     def default_route
