@@ -14,6 +14,9 @@ module SkyStone
         if event.respond_to?(:get_clicked_block)
           if event.get_clicked_block.is?(:stone_button)
             event.player.msg "You clicked a stone button!"
+            if wool = find_and_return(:wool, event.get_clicked_block)
+              event.player.msg "And it was placed on wool: #{wool.get_data}"
+            end
           end
         end
       end
