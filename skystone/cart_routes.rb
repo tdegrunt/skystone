@@ -27,6 +27,13 @@ module SkyStone
         end
       end
 
+      plugin.event(:vehicle_exit) do event
+        if player_route[event.player.name]
+          event.player.msg "Cleared your route"
+          player_route[event.player.name] = false
+        end
+      end
+
     end
 
     def get_direction(from, to)
@@ -61,6 +68,8 @@ module SkyStone
             unless direction_hint
               direction_hint = find_and_return_direction(control_block, player_route[player.name])
             end
+            player.msg "Routing, going #{get_direction(control_block, control_block.block_at(wind, pos))}"
+
 
             # Array locations are:
             # 32
@@ -132,7 +141,6 @@ module SkyStone
           control_item = string_from_block(control_block.block_at(wind, pos))
           #debug "Checking #{pos}: #{destination_item} == #{control_item}: #{wind}" unless control_item == "2:0"
           if control_item == destination_item
-            debug "I guess i want to go: #{get_direction(control_block, control_block.block_at(wind, pos))}"
             return get_direction(control_block, control_block.block_at(wind, pos))
           end
         end
