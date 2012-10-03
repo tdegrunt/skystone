@@ -1,0 +1,9 @@
+carts:
+  router:
+    home: '35:0'
+    destinations:
+      '35:14': Red station
+      '35:0': Main station
+      '35:7': Gray station
+      '35:1': Sheep farm
+      '35:2': Magenta station

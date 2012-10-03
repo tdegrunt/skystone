@@ -1,7 +1,9 @@
 module SkyStone
   class CartRoutes
+
     def initialize(plugin)
       @plugin = plugin
+
       plugin.event(:vehicle_move) do |event|
         to = event.get_to
         from = event.get_from
@@ -23,9 +25,9 @@ module SkyStone
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
 
             if attached.block_at(:down).is?(:lapis_block)
-              player_route[event.player.name] = string_from_block(attached)
-              event.player.msg "You've clicked a route button - setting your route to #{string_from_block(attached)}"
-              #event.player.msg "it's attached to: #{string_from_block(attached)}"
+              destination = string_from_block(attached)
+              player_route[event.player.name] = destination
+              event.player.msg "You've clicked a route button - setting your route to #{destination_name(destination)}"
             end
           end
         end
@@ -33,10 +35,9 @@ module SkyStone
 
       plugin.event(:vehicle_exit) do |event|
         player = event.get_vehicle.get_passenger
-        if player_route[player.name]
-          player.msg "Reset your route (was: #{player_route[player.name]})"
-          # FIXME - Needs defaults - ie plugin config
-          player_route[player.name] = "35:0"
+        if player_route[player.name] != default_route
+          player.msg "Reset your route to #{destination_name(default_route)} (was: #{destination_name(player_route[player.name])})"
+          player_route[player.name] = default_route
         end
       end
 
@@ -269,6 +270,18 @@ module SkyStone
 
     def debug(text)
       plugin.server.broadcast_message "CartRoutes: #{text}"
+    end
+
+    def config
+      plugin.config
+    end
+
+    def destination_name(destination)
+      config.get!("carts.router.destinations.#{destination}", destination)
+    end
+
+    def default_route
+      config.get!('carts.router.home', '35:0')
     end
   end
 end
