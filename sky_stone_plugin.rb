@@ -1,9 +1,9 @@
 require 'singleton'
 $:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
-require_relative 'skystone/plugin'
-require_relative 'skystone/storage_cart_system'
-require_relative 'skystone/cart_routes'
+require_relative 'SkyStone/plugin'
+require_relative 'SkyStone/storage_cart_system'
+require_relative 'SkyStone/cart_routes'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
@@ -43,11 +43,11 @@ class SkyStonePlugin
   end
 
   def force_reload!
-    load 'skystone/plugin.rb'
-    load 'skystone/storage_cart_system.rb'
-    load 'skystone/cart_routes.rb'
-    load 'skystone/system_block.rb'
-    load 'skystone/block.rb'
-    load 'skystone/transceiver.rb'
+    load 'SkyStone/plugin.rb'
+    load 'SkyStone/storage_cart_system.rb'
+    load 'SkyStone/cart_routes.rb'
+    load 'SkyStone/system_block.rb'
+    load 'SkyStone/block.rb'
+    load 'SkyStone/transceiver.rb'
   end
 end
