@@ -27,7 +27,7 @@ module SkyStone
             if attached.block_at(:down).is?(:lapis_block)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
-              event.player.msg "You've selected destination: '#{destination_name(destination)}'/'#{destination_name(default_route, true)}'"
+              event.player.msg "You've selected destination: '#{destination_name(destination)}'/'#{destination_name(destination, true)}'"
             end
           end
         end
@@ -36,7 +36,7 @@ module SkyStone
       plugin.event(:vehicle_exit) do |event|
         player = event.get_vehicle.get_passenger
         if player_route[player.name] != default_route
-          player.msg "Reset your route to '#{destination_name(default_route)}'/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(default_route, true)}')"
+          player.msg "Reset your route to '#{destination_name(default_route)}'/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(player_route[player.name], true)}')"
           player_route[player.name] = default_route
         end
       end
@@ -246,10 +246,10 @@ module SkyStone
       command = arguments.shift
       case command
       when nil
-        player.msg "Your current destination: #{destination_name(player_route[player.name])}/'#{destination_name(default_route, true)}'"
+        player.msg "Your current destination: #{destination_name(player_route[player.name])}/'#{destination_name(player_route[player.name], true)}'"
       when config.router.destinations.has_key?(command)
         player_route[player.name] = command
-        player.msg "Your new destination is '#{destination_name(command)}'/'#{destination_name(default_route, true)}'"
+        player.msg "Your new destination is '#{destination_name(command)}'/'#{destination_name(command, true)}'"
       else
         plugin.broadcast "Look ma! #{player.name} sent me command #{arguments.first}"
       end
