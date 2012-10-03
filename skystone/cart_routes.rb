@@ -27,10 +27,11 @@ module SkyStone
         end
       end
 
-      plugin.event(:vehicle_exit) do event
-        if player_route[event.player.name]
-          event.player.msg "Cleared your route"
-          player_route[event.player.name] = false
+      plugin.event(:vehicle_exit) do |event|
+        player = event.get_vehicle.get_passenger
+        if player_route[player.name]
+          player.msg "Reset your route (was: #{player_route[player.name]})"
+          player_route[player.name] = false
         end
       end
 
