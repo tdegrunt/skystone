@@ -27,7 +27,7 @@ module SkyStone
             if attached.block_at(:down).is?(:lapis_block)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
-              event.player.msg "You've selected destination: '#{destination_name(destination)}'/'#{destination_name(destination, true)}'"
+              event.player.msg "You've selected destination: #{destination_name(destination)}/'#{destination_name(destination, true)}'"
             end
           end
         end
@@ -36,7 +36,7 @@ module SkyStone
       plugin.event(:vehicle_exit) do |event|
         player = event.get_vehicle.get_passenger
         if player_route[player.name] != default_route
-          player.msg "Reset your route to '#{destination_name(default_route)}'/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(player_route[player.name], true)}')"
+          player.msg "Reset your route to #{destination_name(default_route)}/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(player_route[player.name], true)}')"
           player_route[player.name] = default_route
         end
       end
@@ -244,14 +244,10 @@ module SkyStone
     # Fired when a player types /skystone route
     def cmd(player, arguments)
       command = arguments.shift
-      case command
-      when nil
-        player.msg "Your current destination: #{destination_name(player_route[player.name])}/'#{destination_name(player_route[player.name], true)}'"
-      when Hash.new(config.get!('carts.router.destinations',{})).has_key?(command)
-        player_route[player.name] = command
-        player.msg "Your new destination is '#{destination_name(command)}'/'#{destination_name(command, true)}'"
-      else
-        debug "Look ma! #{player.name} sent me command #{arguments.first}"
+      if all_destinations(:short).include?(command)
+        destination_value = destination_value_for_short(command)
+        player_route[player.name] = destination_value
+        player.msg "Your new destination is #{destination_name(destination_value)}/'#{destination_name(destination_value, true)}'"
       end
     end
 
@@ -278,6 +274,28 @@ module SkyStone
         config.get!("carts.router.destinations.#{destination}.short", destination)
       else
         config.get!("carts.router.destinations.#{destination}.name", destination)
+      end
+    end
+
+    def destination_value_for_short(short)
+      all_destinations.select do |d|
+        config.get!("carts.router.destinations.#{d}.short", d) == short
+      end[0]
+    end
+
+    def all_destinations(how = :value)
+      destinations = Array.new(config.get!('carts.router.destinations',{}).get_keys(false).to_array)
+      case how
+      when :value
+        destinations
+      when :short
+        destinations.map do |d|
+          config.get!("carts.router.destinations.#{d}.short", d)
+        end
+      when :name
+        destinations.map do |d|
+          config.get!("carts.router.destinations.#{d}.name", d)
+        end
       end
     end
 
