@@ -6,17 +6,47 @@ carts:
         name: Main station
         short: white
       '35:1':
-        name: Sheep farm
+        name: Sheep Farm
         short: orange
       '35:2':
         name: Magenta station
         short: magenta
+      '35:3':
+        name: Light-Blue station
+        short: lblue
+      '35:4':
+        name: Yellow station
+        short: yellow
+      '35:5':
+        name: Lime station
+        short: lime
+      '35:6':
+        name: Pink station
+        short: pink
       '35:7':
         name: Gray station
         short: gray
+      '35:8':
+        name: Light-Gray station
+        short: lgray
+      '35:9':
+        name: Cyan station
+        short: cyan
+      '35:10':
+        name: Purple station
+        short: purple
+      '35:11':
+        name: Blue station
+        short: blue
+      '35:12':
+        name: Brown station
+        short: brown
+      '35:13':
+        name: Green station
+        short: green
       '35:14':
-        name: Red station
+        name: The Opposite
         short: red
-      '35:4':
-        name: '35:4'
-        short: '35:4'
+      '35:15':
+        name: Black station
+        short: black
