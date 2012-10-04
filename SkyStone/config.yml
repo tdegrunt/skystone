@@ -17,3 +17,6 @@ carts:
       '35:14':
         name: Red station
         short: red
+      '35:4':
+        name: '35:4'
+        short: '35:4'

@@ -3,7 +3,7 @@ $:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dir
 
 require_relative 'SkyStone/plugin'
 require_relative 'SkyStone/storage_cart_system'
-require_relative 'SkyStone/cart_routes'
+require_relative 'SkyStone/carts_router'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
@@ -22,7 +22,7 @@ class SkyStonePlugin
 
     # Somehow I need this self or my server chokes - Plugin.instance doesn't do the trick
     @storage_cart_system = SkyStone::StorageCartSystem.new(self)
-    @cart_routes = SkyStone::CartRoutes.new(self)
+    @carts_router = SkyStone::CartsRouter.new(self)
   end
 
   private
@@ -35,7 +35,7 @@ class SkyStonePlugin
       when :eval
         eval arguments.join(" ")
       when :route
-        @cart_routes.cmd(player, arguments)
+        @carts_router.cmd(player, arguments)
       when :storage
         @storage_cart_system.cmd(player, arguments)
       end
@@ -45,7 +45,7 @@ class SkyStonePlugin
   def force_reload!
     load 'SkyStone/plugin.rb'
     load 'SkyStone/storage_cart_system.rb'
-    load 'SkyStone/cart_routes.rb'
+    load 'SkyStone/carts_router.rb'
     load 'SkyStone/system_block.rb'
     load 'SkyStone/block.rb'
     load 'SkyStone/transceiver.rb'

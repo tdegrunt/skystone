@@ -1,5 +1,5 @@
 module SkyStone
-  class CartRoutes
+  class CartsRouter
 
     def initialize(plugin)
       @plugin = plugin
@@ -16,15 +16,12 @@ module SkyStone
       plugin.event(:player_interact) do |event|
         if event.respond_to?(:get_clicked_block) && event.get_clicked_block
           if event.get_clicked_block.is?(:stone_button)
-            #event.player.msg "You clicked a stone button!"
-            #if wool = find_and_return(:wool, event.get_clicked_block)
-            #  event.player.msg "And it was placed on wool: #{wool.get_data}"
-            #end
             button = event.get_clicked_block.get_state.get_data
-            #event.player.msg "button: #{button}"
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
 
-            if attached.block_at(:down).is?(:lapis_block)
+            #if there's a lapis_block adjacent the attached block
+            #if attached.block_at(:down).is?(:lapis_block)
+            if find_and_return(:lapis_block, attached)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
               event.player.msg "You've selected destination: #{destination_name(destination)}/'#{destination_name(destination, true)}'"
@@ -36,8 +33,8 @@ module SkyStone
       plugin.event(:vehicle_exit) do |event|
         player = event.get_vehicle.get_passenger
         if player_route[player.name] != default_route
-          player.msg "Reset your route to #{destination_name(default_route)}/'#{destination_name(default_route, true)}' (was: '#{destination_name(player_route[player.name])}'/'#{destination_name(player_route[player.name], true)}')"
-          player_route[player.name] = default_route
+          player.msg "Reset your route to #{destination_name(default_route)}/'#{destination_name(default_route, true)}' (was: #{destination_name(player_route[player.name])}/'#{destination_name(player_route[player.name], true)}')"
+          player_route.delete(player.name)
         end
       end
 
@@ -238,6 +235,10 @@ module SkyStone
         block.block_at(:south)
       when block.block_at(:west).is?(type)
         block.block_at(:west)
+      when block.block_at(:up).is?(type)
+        block.block_at(:up)
+      when block.block_at(:down).is?(type)
+        block.block_at(:down)
       end
     end
 
