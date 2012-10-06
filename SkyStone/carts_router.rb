@@ -21,7 +21,7 @@ module SkyStone
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
 
             #if there's a lapis_block adjacent the attached block
-            #if attached.block_at(:down).is?(:lapis_block)
+            #if attached.block_at_real(:down).is?(:lapis_block)
             if find_and_return(:lapis_block, attached)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
@@ -60,7 +60,7 @@ module SkyStone
 
       if block.is?(:detector_rail)
         #debug "Detector rail detected - player moving #{moving_direction}"
-        base = block.block_at(:down)
+        base = block.block_at_real(:down)
 
         # find the control block - the block of lapis
         if control_block = find_and_return_control_block(:lapis_block, base)
@@ -78,7 +78,7 @@ module SkyStone
             unless direction_hint
               direction_hint = moving_direction
             end
-            #player.msg "Routing, going #{get_direction(control_block, control_block.block_at(wind, pos))}"
+            #player.msg "Routing, going #{get_direction(control_block, control_block.block_at_real(wind, pos))}"
 
 
             # Array locations are:
@@ -147,7 +147,7 @@ module SkyStone
       (2..25).each do |pos|
         wind_rotations_for(moving_direction).each do |wind|
           # prevent errors in case of no block
-          possible_routing_block = control_block.block_at(wind, pos)
+          possible_routing_block = control_block.block_at_real(wind, pos)
           if possible_routing_block
             routing = string_from_block(possible_routing_block)
 
@@ -198,18 +198,18 @@ module SkyStone
 
     def find_and_return(type, block)
       case
-      when block.block_at(:north).is?(type)
-        block.block_at(:north)
-      when block.block_at(:east).is?(type)
-        block.block_at(:east)
-      when block.block_at(:south).is?(type)
-        block.block_at(:south)
-      when block.block_at(:west).is?(type)
-        block.block_at(:west)
-      when block.block_at(:up).is?(type)
-        block.block_at(:up)
-      when block.block_at(:down).is?(type)
-        block.block_at(:down)
+      when block.block_at_real(:north) && block.block_at_real(:north).is?(type)
+        block.block_at_real(:north)
+      when block.block_at_real(:east) && block.block_at_real(:east).is?(type)
+        block.block_at_real(:east)
+      when block.block_at_real(:south) && block.block_at_real(:south).is?(type)
+        block.block_at_real(:south)
+      when block.block_at_real(:west) && block.block_at_real(:west).is?(type)
+        block.block_at_real(:west)
+      when block.block_at_real(:up) && block.block_at_real(:up).is?(type)
+        block.block_at_real(:up)
+      when block.block_at_real(:down) && block.block_at_real(:down).is?(type)
+        block.block_at_real(:down)
       end
     end
 
