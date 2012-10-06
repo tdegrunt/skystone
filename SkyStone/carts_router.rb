@@ -75,6 +75,9 @@ module SkyStone
             unless direction_hint
               direction_hint = find_and_return_direction(moving_direction, control_block, player_route[player.name])
             end
+            unless direction_hint
+              direction_hint = moving_direction
+            end
             #player.msg "Routing, going #{get_direction(control_block, control_block.block_at(wind, pos))}"
 
 
