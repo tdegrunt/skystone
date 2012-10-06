@@ -49,5 +49,6 @@ class SkyStonePlugin
     load 'SkyStone/system_block.rb'
     load 'SkyStone/block.rb'
     load 'SkyStone/transceiver.rb'
+    load 'SkyStone/orientation.rb'
   end
 end
