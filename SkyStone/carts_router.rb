@@ -64,7 +64,7 @@ module SkyStone
 
         # find the control block - the block of lapis
         if control_block = find_and_return_control_block(:lapis_block, base)
-          debug "Controlblock detected - player moving #{moving_direction}"
+          #debug "Controlblock detected - player moving #{moving_direction}"
 
           if player = cart.get_passenger
             player_holds_item = string_from_block(player.get_item_in_hand.get_data)
@@ -75,19 +75,19 @@ module SkyStone
             # Is the player holding a valid directional item?
             if all_destinations(:value).include?(player_holds_item)
               direction_hint = find_and_return_direction(moving_direction, control_block, player_holds_item)
-              player.msg "You hold a direction item, sending you #{direction_hint}"
+              #player.msg "You hold a direction item, sending you #{direction_hint}"
 
               unless direction_hint
                 direction_hint = moving_direction
-                player.msg "Still no direction, sending you #{direction_hint}"
+                #player.msg "Still no direction, sending you #{direction_hint}"
               end
             else
               direction_hint = find_and_return_direction(moving_direction, control_block, player_route[player.name])
-              player.msg "Trying routing you set (#{destination_name(player_route[player.name])}), sending you #{direction_hint}"
+              #player.msg "Trying routing you set (#{destination_name(player_route[player.name])}), sending you #{direction_hint}"
 
               unless direction_hint
                 direction_hint = opposite_of(moving_direction)
-                player.msg "Still no direction, sending you #{direction_hint}"
+                #player.msg "Still no direction, sending you #{direction_hint}"
               end
             end
 
