@@ -90,8 +90,6 @@ module SkyStone
                 player.msg "Still no direction, sending you #{direction_hint}"
               end
             end
-            player.msg "Routing, going #{get_direction(control_block, control_block.block_at_real(wind, pos))}"
-
 
             # Array locations are:
             # 32
