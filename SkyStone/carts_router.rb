@@ -72,13 +72,16 @@ module SkyStone
             # FIXME: Needs to be abstracted in a single routine and always return a destination.
             # Possibly eject + message player if it can't find a destination?
             direction_hint = find_and_return_direction(moving_direction, control_block, player_holds_item)
+            player.msg "You hold a direction item, sending you #{direction_hint}"
             unless direction_hint
               direction_hint = find_and_return_direction(moving_direction, control_block, player_route[player.name])
+              player.msg "Trying routing you set, sending you #{direction_hint}"
             end
             unless direction_hint
               direction_hint = moving_direction
+              player.msg "Still no direction, sending you #{direction_hint}"
             end
-            #player.msg "Routing, going #{get_direction(control_block, control_block.block_at_real(wind, pos))}"
+            player.msg "Routing, going #{get_direction(control_block, control_block.block_at_real(wind, pos))}"
 
 
             # Array locations are:
