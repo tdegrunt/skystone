@@ -141,7 +141,7 @@ module SkyStone
     end
 
     def find_and_return_direction(moving_direction, control_block, selected_destination)
-      (2..10).each do |pos|
+      (2..25).each do |pos|
         wind_rotations_for(moving_direction).each do |wind|
           # prevent errors in case of no block
           possible_routing_block = control_block.block_at(wind, pos)
