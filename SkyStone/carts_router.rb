@@ -78,7 +78,7 @@ module SkyStone
               player.msg "You hold a direction item, sending you #{direction_hint}"
 
               unless direction_hint
-                direction_hint = moving_direction
+                direction_hint = opposite_of(moving_direction)
                 player.msg "Still no direction, sending you #{direction_hint}"
               end
             else
@@ -86,7 +86,7 @@ module SkyStone
               player.msg "Trying routing you set, sending you #{direction_hint}"
 
               unless direction_hint
-                direction_hint = moving_direction
+                direction_hint = opposite_of(moving_direction)
                 player.msg "Still no direction, sending you #{direction_hint}"
               end
             end

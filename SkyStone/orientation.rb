@@ -13,4 +13,21 @@ module Orientation
     end
   end
 
+  def opposite_of(wind)
+    case
+    when wind == :north
+      :south
+    when wind == :east
+      :west
+    when wind == :south
+      :north
+    when wind == :west
+      :east
+    when wind == :up
+      :down
+    when wind == :down
+      :up
+    end
+  end
+
 end
