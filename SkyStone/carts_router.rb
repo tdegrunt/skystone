@@ -1,14 +1,15 @@
+require_relative 'orientation'
+
 module SkyStone
   class CartsRouter
+
+    include Orientation
 
     def initialize(plugin)
       @plugin = plugin
 
       plugin.event(:vehicle_move) do |event|
-        to = event.get_to
-        from = event.get_from
-
-        if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
+        moved_a_whole_block?(event) do |from, to|
           check(to.get_block, event.get_vehicle, from.get_block, get_direction(from, to))
         end
       end
@@ -68,9 +69,11 @@ module SkyStone
           if player = cart.get_passenger
             player_holds_item = string_from_block(player.get_item_in_hand.get_data)
 
-            direction_hint = find_and_return_direction(control_block, player_holds_item)
+            # FIXME: Needs to be abstracted in a single routine and always return a destination.
+            # Possibly eject + message player if it can't find a destination?
+            direction_hint = find_and_return_direction(moving_direction, control_block, player_holds_item)
             unless direction_hint
-              direction_hint = find_and_return_direction(control_block, player_route[player.name])
+              direction_hint = find_and_return_direction(moving_direction, control_block, player_route[player.name])
             end
             #player.msg "Routing, going #{get_direction(control_block, control_block.block_at(wind, pos))}"
 
@@ -78,8 +81,7 @@ module SkyStone
             # Array locations are:
             # 32
             # 41
-
-            # x y z
+            # and x y z per sub-array.
             rails_positions = {}
             rails_positions[:north] = [[0, 0, -2], [0, 0, -4], [-2, 0, -4], [-2, 0, -2]]
             rails_positions[:south] = [[0, 0, 2], [0, 0, 4], [2, 0, 4], [2, 0, 2]]
@@ -138,14 +140,17 @@ module SkyStone
       rails.set_data direction
     end
 
-    def find_and_return_direction(control_block, destination_item)
-      #control_block.
-      [:south, :west, :north, :east].each do |wind|
-        (2..10).each do |pos|
-          control_item = string_from_block(control_block.block_at(wind, pos))
-          #debug "Checking #{pos}: #{destination_item} == #{control_item}: #{wind}" unless control_item == "2:0"
-          if control_item == destination_item
-            return get_direction(control_block, control_block.block_at(wind, pos))
+    def find_and_return_direction(moving_direction, control_block, selected_destination)
+      (2..10).each do |pos|
+        wind_rotations_for(moving_direction).each do |wind|
+          # prevent errors in case of no block
+          possible_routing_block = control_block.block_at(wind, pos)
+          if possible_routing_block
+            routing = string_from_block(possible_routing_block)
+
+            if all_destinations(:value).include?(routing) && routing == selected_destination
+              return get_direction(control_block, possible_routing_block)
+            end
           end
         end
       end
@@ -188,43 +193,6 @@ module SkyStone
       end
     end
 
-    # Theoretically a flexible find_and_return
-    # FUK: THis calls for unit tests
-    #
-    # if distance = 2 && edges = true => only X && * will be found
-    # if distance = 2 && edges = false => all will be found
-    #
-    # if distance = 2 && corners = true => only c will be found
-    # if distance = 2 && corners = false => all will be found
-    #
-    #  cX*Xc
-    #  X0+0X
-    #  *+++*
-    #  X0+0X
-    #  cX*Xc
-    #
-    def find_and_return_flex(type, block, options)
-      distance = options[:distance] ||= 1
-      height = options[:height] ||= 0
-      depth = options[:depth] ||= 0
-      plane = options[:plane] ||= :all # :corners, :edges, :plus
-
-      (-distance..distance).each do |x|
-        (-depth..height).each do |y|
-          (-distance..distance).each do |z|
-            if ((plane == :all) ||
-              (plane == :edges && (x.abs == distance || z.abs == distance)) ||
-              (plane == :plus && (x == 0 || z == 0)) ||
-              (plane == :corners && (x.abs == distance && y.abs == distance)))
-              #debug "Checking #{x} #{y} #{z}: #{block.get_relative(x, y, z).is?(type)}"
-              return block.get_relative(x, y, z) if block.get_relative(x, y, z).is?(type)
-            end
-          end
-        end
-      end
-      false
-    end
-
     def find_and_return(type, block)
       case
       when block.block_at(:north).is?(type)
@@ -254,8 +222,14 @@ module SkyStone
 
     private
 
+    # Indexed with player.name
     def player_route
-      @player_route ||= Hash.new("35:0")
+      @player_route ||= Hash.new(default_route)
+    end
+
+    # Indexed with [x, y, z] of control-block
+    def switch
+      @switch ||= Hash.new({:in_use_by => ''})
     end
 
     def plugin
@@ -302,6 +276,15 @@ module SkyStone
 
     def default_route
       config.get!('carts.router.home', '35:0')
+    end
+
+    # Check that we moved a whole block, this prevents multiple events fired for moving from the same X,Y,Z coordinates
+    def moved_a_whole_block?(event)
+      to = event.get_to
+      from = event.get_from
+      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
+        yield from, to
+      end
     end
   end
 end

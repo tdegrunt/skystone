@@ -62,6 +62,44 @@ class StorageCartSystem
     end
   end
 
+  # Theoretically a flexible find_and_return
+  # FUK: This calls for unit tests
+  #
+  # if distance = 2 && edges = true => only X && * will be found
+  # if distance = 2 && edges = false => all will be found
+  #
+  # if distance = 2 && corners = true => only c will be found
+  # if distance = 2 && corners = false => all will be found
+  #
+  #  cX*Xc
+  #  X0+0X
+  #  *+++*
+  #  X0+0X
+  #  cX*Xc
+  #
+  def find_and_return_flex(type, block, options)
+    distance = options[:distance] ||= 1
+    height = options[:height] ||= 0
+    depth = options[:depth] ||= 0
+    plane = options[:plane] ||= :all # :corners, :edges, :plus
+
+    (-distance..distance).each do |x|
+      (-depth..height).each do |y|
+        (-distance..distance).each do |z|
+          if ((plane == :all) ||
+            (plane == :edges && (x.abs == distance || z.abs == distance)) ||
+            (plane == :plus && (x == 0 || z == 0)) ||
+            (plane == :corners && (x.abs == distance && y.abs == distance)))
+            #debug "Checking #{x} #{y} #{z}: #{block.get_relative(x, y, z).is?(type)}"
+            return block.get_relative(x, y, z) if block.get_relative(x, y, z).is?(type)
+          end
+        end
+      end
+    end
+    false
+  end
+
+
   def debug(text)
     @plugin.server.broadcast_message "StorageCartSystem: #{text}"
   end
