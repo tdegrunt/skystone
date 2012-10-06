@@ -20,6 +20,10 @@ module org::bukkit::block::Block
         :south
       when wind == :west
         :north
+      when wind == :up
+        :up
+      when wind == :down
+        :down
       end
     else
       case
@@ -31,6 +35,10 @@ module org::bukkit::block::Block
         :north
       when wind == :west
         :south
+      when wind == :up
+        :up
+      when wind == :down
+        :down
       end
     end
   end
