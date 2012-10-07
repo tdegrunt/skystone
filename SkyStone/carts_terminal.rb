@@ -1,5 +1,6 @@
 require_relative 'orientation'
 require_relative 'vehicle_move_event'
+require_relative 'block'
 
 module SkyStone
   class CartsTerminal
@@ -15,22 +16,31 @@ module SkyStone
         end
       end
 
-      # plugin.event(:player_interact) do |event|
-      #   if event.respond_to?(:get_clicked_block) && event.get_clicked_block
-      #     if event.get_clicked_block.is?(:stone_button)
-      #       button = event.get_clicked_block.get_state.get_data
-      #       attached = event.get_clicked_block.get_relative(button.get_attached_face)
+      plugin.event(:player_interact) do |event|
+        if event.respond_to?(:get_clicked_block) && event.get_clicked_block
+          if event.get_clicked_block.is?(:stone_button)
+            button = event.get_clicked_block.get_state.get_data
+            attached = event.get_clicked_block.get_relative(button.get_attached_face)
+            facing = face_to_wind(button.get_attached_face)
+            #event.player.msg "Attached face: #{button.get_attached_face}"
+            event.player.msg "Attached face: #{face_to_wind(button.get_attached_face)}"
 
-      #       #if there's a lapis_block adjacent the attached block
-      #       #if attached.block_at_real(:down).is?(:lapis_block)
-      #       if find_and_return(:lapis_block, attached)
-      #         destination = string_from_block(attached)
-      #         player_route[event.player.name] = destination
-      #         event.player.msg "You've selected destination: #{destination_name(destination)}/'#{destination_name(destination, true)}'"
-      #       end
-      #     end
-      #   end
-      # end
+            if attached.block_at_side_for(facing, :left).block_at_real(:down).is?(:dispenser)
+              dispenser = attached.block_at_side_for(facing, :left).block_at_real(:down)
+            end
+
+            if attached.block_at_side_for(facing, :right).block_at_real(:down).is?(:dispenser)
+              dispenser = attached.block_at_side_for(facing, :right).block_at_real(:down)
+            end
+
+            if dispenser
+              if find_and_return(:lapis_block, dispenser.block_at_real(:down))
+                event.player.msg "Found dispenser & lapis"
+              end
+            end
+          end
+        end
+      end
 
       # plugin.event(:vehicle_exit) do |event|
       #   player = event.get_vehicle.get_passenger

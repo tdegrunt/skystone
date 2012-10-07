@@ -1,5 +1,7 @@
 module org::bukkit::block::Block
 
+  include Orientation
+
   def block_at_real(wind, distance=nil)
     face_parm = translate_wind_to(wind, :beta)
 
@@ -9,37 +11,37 @@ module org::bukkit::block::Block
     distance ? get_relative(face, distance) : get_relative(face)
   end
 
-  def translate_wind_to(wind, wut = :real)
-    if wut == :beta
-      case
-      when wind == :north
-        :east
-      when wind == :south
-        :west
-      when wind == :east
-        :south
-      when wind == :west
-        :north
-      when wind == :up
-        :up
-      when wind == :down
-        :down
+  def block_at_side_for(facing, side, distance=nil)
+    case facing
+    when :east
+      case side
+      when :left
+        block_at_real(:south, distance)
+      when :right
+        block_at_real(:north, distance)
       end
-    else
-      case
-      when wind == :north
-        :west
-      when wind == :south
-        :east
-      when wind == :east
-        :north
-      when wind == :west
-        :south
-      when wind == :up
-        :up
-      when wind == :down
-        :down
+    when :west
+      case side
+      when :left
+        block_at_real(:north, distance)
+      when :right
+        block_at_real(:south, distance)
+      end
+    when :north
+      case side
+      when :left
+        block_at_real(:east, distance)
+      when :right
+        block_at_real(:west, distance)
+      end
+    when :south
+      case side
+      when :left
+        block_at_real(:west, distance)
+      when :right
+        block_at_real(:east, distance)
       end
     end
   end
+
 end

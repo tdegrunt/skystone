@@ -1,4 +1,8 @@
+require 'java'
+
 module Orientation
+
+  BF = org.bukkit.block.BlockFace
 
   def wind_rotations_for(wind)
     case
@@ -83,4 +87,50 @@ module Orientation
     end
   end
 
+  def translate_wind_to(wind, wut = :real)
+    if wut == :beta
+      case
+      when wind == :north
+        :east
+      when wind == :south
+        :west
+      when wind == :east
+        :south
+      when wind == :west
+        :north
+      when wind == :up
+        :up
+      when wind == :down
+        :down
+      end
+    else
+      case
+      when wind == :north
+        :west
+      when wind == :south
+        :east
+      when wind == :east
+        :north
+      when wind == :west
+        :south
+      when wind == :up
+        :up
+      when wind == :down
+        :down
+      end
+    end
+  end
+
+  def face_to_wind(facing)
+    case facing
+    when BF::NORTH
+      :east
+    when BF::SOUTH
+      :west
+    when BF::EAST
+      :south
+    when BF::WEST
+      :north
+    end
+  end
 end
