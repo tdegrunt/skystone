@@ -1,4 +1,5 @@
 require_relative 'orientation'
+require_relative 'vehicle_move_event'
 
 module SkyStone
   class CartsRouter
@@ -9,7 +10,7 @@ module SkyStone
       @plugin = plugin
 
       plugin.event(:vehicle_move) do |event|
-        moved_a_whole_block?(event) do |from, to|
+        event.moved_a_whole_block? do |from, to|
           check(to.get_block, event.get_vehicle, from.get_block, get_direction(from, to))
         end
       end
@@ -41,19 +42,6 @@ module SkyStone
 
     end
 
-    def get_direction(from, to)
-      case
-      when to.get_z.to_i < from.get_z.to_i
-        :north
-      when to.get_z.to_i > from.get_z.to_i
-        :south
-      when to.get_x.to_i < from.get_x.to_i
-        :west
-      when to.get_x.to_i > from.get_x.to_i
-        :east
-      end
-    end
-
     def check(block, cart, from, moving_direction)
       # base is event's base block (likely a powered rails)
       # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
@@ -63,7 +51,7 @@ module SkyStone
         base = block.block_at_real(:down)
 
         # find the control block - the block of lapis
-        if control_block = find_and_return_control_block(:lapis_block, base)
+        if control_block = find_and_return_control_block(:carts_router, :lapis_block, base)
           #debug "Controlblock detected - player moving #{moving_direction}"
 
           if player = cart.get_passenger
@@ -183,46 +171,6 @@ module SkyStone
       hash.map{|k,v| v}
     end
 
-    # find the control (lapis) block, from the base
-    # java: Block getRelative(int modX, int modY, int modZ)
-    def find_and_return_control_block(type, block)
-      case
-      when block.get_relative(1, 0, 3).is?(type)
-        block.get_relative(1, 0, 3)
-      when block.get_relative(-1, 0, 3).is?(type)
-        block.get_relative(-1, 0, 3)
-      when block.get_relative(1, 0, -3).is?(type)
-        block.get_relative(1, 0, -3)
-      when block.get_relative(-1, 0, -3).is?(type)
-        block.get_relative(-1, 0, -3)
-      when block.get_relative(3, 0, 1).is?(type)
-        block.get_relative(3, 0, 1)
-      when block.get_relative(3, 0, -1).is?(type)
-        block.get_relative(3, 0, -1)
-      when block.get_relative(-3, 0, 1).is?(type)
-        block.get_relative(-3, 0, 1)
-      when block.get_relative(-3, 0, -1).is?(type)
-        block.get_relative(-3, 0, -1)
-      end
-    end
-
-    def find_and_return(type, block)
-      case
-      when block.block_at_real(:north) && block.block_at_real(:north).is?(type)
-        block.block_at_real(:north)
-      when block.block_at_real(:east) && block.block_at_real(:east).is?(type)
-        block.block_at_real(:east)
-      when block.block_at_real(:south) && block.block_at_real(:south).is?(type)
-        block.block_at_real(:south)
-      when block.block_at_real(:west) && block.block_at_real(:west).is?(type)
-        block.block_at_real(:west)
-      when block.block_at_real(:up) && block.block_at_real(:up).is?(type)
-        block.block_at_real(:up)
-      when block.block_at_real(:down) && block.block_at_real(:down).is?(type)
-        block.block_at_real(:down)
-      end
-    end
-
     # Fired when a player types /skystone route
     def cmd(player, arguments)
       command = arguments.shift
@@ -289,15 +237,6 @@ module SkyStone
 
     def default_route
       config.get!('carts.router.home', '35:0')
-    end
-
-    # Check that we moved a whole block, this prevents multiple events fired for moving from the same X,Y,Z coordinates
-    def moved_a_whole_block?(event)
-      to = event.get_to
-      from = event.get_from
-      if to.get_x.to_i != from.get_x.to_i || to.get_y.to_i != from.get_y.to_i || to.get_z.to_i != from.get_z.to_i
-        yield from, to
-      end
     end
   end
 end
