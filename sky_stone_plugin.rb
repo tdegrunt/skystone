@@ -5,6 +5,7 @@ require_relative 'SkyStone/plugin'
 require_relative 'SkyStone/storage_cart_system'
 require_relative 'SkyStone/carts_router'
 require_relative 'SkyStone/carts_terminal'
+require_relative 'SkyStone/chest_filter'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
@@ -25,6 +26,7 @@ class SkyStonePlugin
     @storage_cart_system = SkyStone::StorageCartSystem.new(self)
     @carts_router = SkyStone::CartsRouter.new(self)
     @carts_terminal = SkyStone::CartsTerminal.new(self)
+    @chest_filter = SkyStone::ChestFilter.new(self)
   end
 
   private
@@ -51,6 +53,7 @@ class SkyStonePlugin
     load 'SkyStone/storage_cart_system.rb'
     load 'SkyStone/carts_router.rb'
     load 'SkyStone/carts_terminal.rb'
+    load 'SkyStone/chest_filter.rb'
     load 'SkyStone/system_block.rb'
     load 'SkyStone/block.rb'
     load 'SkyStone/transceiver.rb'
