@@ -31,6 +31,10 @@ module Orientation
       :down
     when wind == :down
       :up
+    when wind == :left
+      :right
+    when wind == :right
+      :left
     end
   end
 

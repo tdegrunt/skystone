@@ -1,8 +1,20 @@
 require_relative 'orientation'
 require_relative 'vehicle_move_event'
 require_relative 'block'
+require 'java'
 
 module SkyStone
+
+  class RunnableProc
+    include java.lang.Runnable
+    def initialize &block
+      @block = block
+    end
+    def run
+      @block.call
+    end
+  end
+
   class CartsTerminal
 
     include Orientation
@@ -27,17 +39,44 @@ module SkyStone
 
             if attached.block_at_side_for(facing, :left).block_at_real(:down).is?(:dispenser)
               dispenser = attached.block_at_side_for(facing, :left).block_at_real(:down)
-              direction = side_of_facing(facing, :right)
+              direction = :right
             end
 
             if attached.block_at_side_for(facing, :right).block_at_real(:down).is?(:dispenser)
               dispenser = attached.block_at_side_for(facing, :right).block_at_real(:down)
-              direction = side_of_facing(facing, :left)
+              direction = :left
             end
 
             if dispenser
-              if find_and_return(:lapis_block, dispenser.block_at_real(:down))
-                event.player.msg "Found dispenser & lapis - going #{direction}"
+              if control_block = find_and_return(:lapis_block, dispenser.block_at_real(:down))
+                wind_direction = side_of_facing(direction, direction)
+                event.player.msg "Found dispenser & lapis - going #{wind_direction} (#{direction})"
+
+                if control_block.block_at_real(:up).is?(:powered_rail)
+                  powered_rail = control_block.block_at_real(:up)
+
+                  normal_rail = powered_rail.block_at_side_for(facing, opposite_of(direction))
+                  normal_rail.change_type :sandstone
+
+
+                  event.player.msg "Powered rail! #{powered_rail.get_data} #{powered_rail}"
+                  # make it powered
+                  powered_rail.set_data 8
+                  event.player.msg "Powered rail! #{powered_rail.get_data} #{powered_rail}"
+
+
+                  scheduler = plugin.server.get_scheduler
+
+                  p=RunnableProc.new do
+                    debug 'running'
+                    powered_rail.set_data 0
+                    normal_rail.change_type :rails
+                  end
+
+                  # 1 sec = 20 ticks
+                  scheduler.schedule_async_delayed_task(plugin, p, 10)
+                end
+
               end
             end
           end
