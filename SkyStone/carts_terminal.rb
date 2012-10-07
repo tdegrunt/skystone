@@ -34,8 +34,6 @@ module SkyStone
             button = event.get_clicked_block.get_state.get_data
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
             facing = face_to_wind(button.get_attached_face)
-            #event.player.msg "Attached face: #{button.get_attached_face}"
-            event.player.msg "Attached face: #{face_to_wind(button.get_attached_face)}"
 
             if attached.block_at_side_for(facing, :left).block_at_real(:down).is?(:dispenser)
               dispenser = attached.block_at_side_for(facing, :left).block_at_real(:down)
@@ -49,32 +47,23 @@ module SkyStone
 
             if dispenser
               if control_block = find_and_return(:lapis_block, dispenser.block_at_real(:down))
-                wind_direction = side_of_facing(direction, direction)
-                event.player.msg "Found dispenser & lapis - going #{wind_direction} (#{direction})"
 
                 if control_block.block_at_real(:up).is?(:powered_rail)
                   powered_rail = control_block.block_at_real(:up)
 
                   normal_rail = powered_rail.block_at_side_for(facing, opposite_of(direction))
+
+                  # TODO: Can we find out whether there is a vehicle on the rails, if not dispense?
+
                   normal_rail.change_type :sandstone
-
-
-                  event.player.msg "Powered rail! #{powered_rail.get_data} #{powered_rail}"
-                  # make it powered
                   powered_rail.set_data 8
-                  event.player.msg "Powered rail! #{powered_rail.get_data} #{powered_rail}"
-
-
-                  scheduler = plugin.server.get_scheduler
 
                   p=RunnableProc.new do
-                    debug 'running'
                     powered_rail.set_data 0
                     normal_rail.change_type :rails
                   end
 
-                  # 1 sec = 20 ticks
-                  scheduler.schedule_async_delayed_task(plugin, p, 10)
+                  schedule_task(p, 20)
                 end
 
               end
@@ -98,17 +87,37 @@ module SkyStone
       # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
 
       if block.is?(:powered_rail)
-        debug "Powered rail detected - player moving #{moving_direction}"
+        #debug "Powered rail detected - player moving #{moving_direction}"
         base = block
 
         if control_block = find_and_return(:lapis_block, base)
-          debug "Controlblock detected - player moving #{moving_direction}"
+          #debug "Controlblock detected - player moving #{moving_direction}"
 
           if dispenser_block = find_and_return(:dispenser, base)
             dispenser = dispenser_block.get_state
-            debug "Dispenser detected - we have a terminal"
-
+            #debug "Dispenser detected - we have a terminal"
             #dispenser.dispense
+
+            if control_block.block_at_real(:up).is?(:powered_rail)
+              powered_rail = control_block.block_at_real(:up)
+
+              normal_rail = powered_rail.block_at_real(opposite_of(moving_direction))
+
+              cleanup=RunnableProc.new do
+                powered_rail.set_data 0
+                normal_rail.change_type :rails
+              end
+
+              get_player_moving=RunnableProc.new do
+                normal_rail.change_type :sandstone
+                powered_rail.set_data 8
+                schedule_task(cleanup, 20)
+              end
+
+              # Hardcoded delay - 5 seconds to get out
+              schedule_task(get_player_moving, 100)
+            end
+
           end
         end
       end
@@ -138,6 +147,15 @@ module SkyStone
 
     def plugin
       @plugin
+    end
+
+    def scheduler
+      plugin.server.get_scheduler
+    end
+
+    # 1 sec = 20 ticks
+    def schedule_task(proc, delay = 20)
+      scheduler.schedule_async_delayed_task(plugin, proc, delay)
     end
 
   end
