@@ -23,23 +23,33 @@ module SkyStone
       # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
 
       if cart.respond_to?(:get_inventory) && block.is?(:detector_rail)
-        debug "Detector rail detected - chest moving #{moving_direction}"
+        #debug "Detector rail detected - chest moving #{moving_direction}"
         base = block
 
         if control_block = find_and_return(:lapis_block, base)
-          debug "Controlblock detected - chest moving #{moving_direction}"
+          #debug "Controlblock detected - chest moving #{moving_direction}"
 
-          if chest_block = find_and_return(:chest, base)
-            chest = chest_block.get_state
+          if first_chest_block = find_and_return(:chest, base)
             debug "Chest detected - we have a filter"
 
-            inventory = chest.get_inventory
-            move_what = inventory.get_item(0).get_type.to_string.downcase.to_sym
-            debug "Chest content #{move_what}"
-
-            Inventory.move_items(cart.get_inventory, inventory, move_what)
+            (0..10).each do |pos|
+              chest_block = first_chest_block.block_at_real(:up, pos)
+              check_and_move(chest_block, cart, pos)
+            end
 
           end
+        end
+      end
+    end
+
+    def check_and_move(chest_block, cart, pos)
+      if chest_block.is?(:chest)
+        chest = chest_block.get_state
+        inventory = chest.get_inventory
+        if first_item = inventory.get_item(0)
+          move_what = first_item.get_type.to_string.downcase.to_sym
+          debug "moving #{move_what}"
+          Inventory.move_items(cart.get_inventory, inventory, move_what)
         end
       end
     end
@@ -49,7 +59,7 @@ module SkyStone
     end
 
     def debug(text)
-      plugin.server.broadcast_message "CartRoutes: #{text}"
+      plugin.server.broadcast_message "ChestFilter: #{text}"
     end
 
   end

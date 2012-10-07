@@ -18,7 +18,7 @@ module SkyStone
       private
 
       def is_one_of_these_materials?(item_stack, materials = :all)
-        if item_stack.respond_to?(:get_type)  
+        if item_stack.respond_to?(:get_type)
           if materials == :all
             return true
           end
