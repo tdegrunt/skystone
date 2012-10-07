@@ -27,15 +27,17 @@ module SkyStone
 
             if attached.block_at_side_for(facing, :left).block_at_real(:down).is?(:dispenser)
               dispenser = attached.block_at_side_for(facing, :left).block_at_real(:down)
+              direction = side_of_facing(facing, :right)
             end
 
             if attached.block_at_side_for(facing, :right).block_at_real(:down).is?(:dispenser)
               dispenser = attached.block_at_side_for(facing, :right).block_at_real(:down)
+              direction = side_of_facing(facing, :left)
             end
 
             if dispenser
               if find_and_return(:lapis_block, dispenser.block_at_real(:down))
-                event.player.msg "Found dispenser & lapis"
+                event.player.msg "Found dispenser & lapis - going #{direction}"
               end
             end
           end

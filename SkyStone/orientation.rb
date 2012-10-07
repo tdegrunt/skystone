@@ -133,4 +133,37 @@ module Orientation
       :north
     end
   end
+
+  def side_of_facing(facing, side)
+    case facing
+    when :east
+      case side
+      when :left
+        :south
+      when :right
+        :north
+      end
+    when :west
+      case side
+      when :left
+        :north
+      when :right
+        :south
+      end
+    when :north
+      case side
+      when :left
+        :east
+      when :right
+        :west
+      end
+    when :south
+      case side
+      when :left
+        :west
+      when :right
+        :east
+      end
+    end
+  end
 end

@@ -12,36 +12,8 @@ module org::bukkit::block::Block
   end
 
   def block_at_side_for(facing, side, distance=nil)
-    case facing
-    when :east
-      case side
-      when :left
-        block_at_real(:south, distance)
-      when :right
-        block_at_real(:north, distance)
-      end
-    when :west
-      case side
-      when :left
-        block_at_real(:north, distance)
-      when :right
-        block_at_real(:south, distance)
-      end
-    when :north
-      case side
-      when :left
-        block_at_real(:east, distance)
-      when :right
-        block_at_real(:west, distance)
-      end
-    when :south
-      case side
-      when :left
-        block_at_real(:west, distance)
-      when :right
-        block_at_real(:east, distance)
-      end
-    end
+    wind = side_of_facing(facing, side)
+    block_at_real(wind, distance)
   end
 
 end
