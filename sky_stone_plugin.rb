@@ -37,7 +37,7 @@ class SkyStonePlugin
       when :eval
         eval arguments.join(" ")
       when :inspect
-        player.msg player.target_block.inspect
+        player.msg "#{player.target_block.inspect}/#{player.target_block.get_data}"
       when :route
         @carts_router.cmd(player, arguments)
       when :storage

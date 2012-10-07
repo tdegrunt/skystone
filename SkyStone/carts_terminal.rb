@@ -56,10 +56,10 @@ module SkyStone
                   # TODO: Can we find out whether there is a vehicle on the rails, if not dispense?
 
                   normal_rail.change_type :sandstone
-                  powered_rail.set_data 8
+                  powered_rail.set_data powered_rail.get_data + 8
 
                   p=RunnableProc.new do
-                    powered_rail.set_data 0
+                    powered_rail.set_data powered_rail.get_data - 8
                     normal_rail.change_type :rails
                   end
 
@@ -104,13 +104,13 @@ module SkyStone
               normal_rail = powered_rail.block_at_real(opposite_of(moving_direction))
 
               cleanup=RunnableProc.new do
-                powered_rail.set_data 0
+                powered_rail.set_data powered_rail.get_data - 8
                 normal_rail.change_type :rails
               end
 
               get_player_moving=RunnableProc.new do
                 normal_rail.change_type :sandstone
-                powered_rail.set_data 8
+                powered_rail.set_data powered_rail.get_data + 8
                 schedule_task(cleanup, 20)
               end
 
