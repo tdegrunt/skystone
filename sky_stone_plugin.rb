@@ -2,6 +2,8 @@ require 'singleton'
 $:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 require_relative 'SkyStone/plugin'
+require_relative 'SkyStone/item_stack'
+require_relative 'SkyStone/inventory'
 require_relative 'SkyStone/storage_cart_system'
 require_relative 'SkyStone/carts_router'
 require_relative 'SkyStone/carts_terminal'
@@ -55,6 +57,8 @@ class SkyStonePlugin
     load 'SkyStone/carts_terminal.rb'
     load 'SkyStone/chest_filter.rb'
     load 'SkyStone/system_block.rb'
+    load 'SkyStone/inventory.rb'
+    load 'SkyStone/item_stack.rb'
     load 'SkyStone/block.rb'
     load 'SkyStone/transceiver.rb'
     load 'SkyStone/orientation.rb'

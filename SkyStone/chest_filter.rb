@@ -52,8 +52,7 @@ module SkyStone
         chest = chest_block.get_state
         inventory = chest.get_inventory
         if first_item = inventory.get_item(0)
-          move_what = first_item.get_type.to_string.downcase.to_sym
-          #debug "moving #{move_what}"
+          move_what = first_item.to_string
           Inventory.move_items(cart.get_inventory, inventory, move_what)
         end
       end
