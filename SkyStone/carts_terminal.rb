@@ -54,7 +54,6 @@ module SkyStone
                   normal_rail = powered_rail.block_at_side_for(facing, opposite_of(direction))
 
                   # TODO: Can we find out whether there is a vehicle on the rails, if not dispense?
-
                   normal_rail.change_type :sandstone
                   powered_rail.set_data powered_rail.get_data + 8
 
@@ -72,19 +71,9 @@ module SkyStone
         end
       end
 
-      # plugin.event(:vehicle_exit) do |event|
-      #   player = event.get_vehicle.get_passenger
-      #   if player_route[player.name] != default_route
-      #     player.msg "Reset your route to #{destination_name(default_route)}/'#{destination_name(default_route, true)}' (was: #{destination_name(player_route[player.name])}/'#{destination_name(player_route[player.name], true)}')"
-      #     player_route.delete(player.name)
-      #   end
-      # end
-
     end
 
     def check(block, cart, from, moving_direction)
-      # base is event's base block (likely a powered rails)
-      # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
 
       if block.is?(:powered_rail)
         #debug "Powered rail detected - player moving #{moving_direction}"

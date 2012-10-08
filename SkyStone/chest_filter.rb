@@ -20,8 +20,6 @@ module SkyStone
     end
 
     def check(block, cart, from, moving_direction)
-      # base is event's base block (likely a powered rails)
-      # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
 
       if cart.respond_to?(:get_inventory) && block.is?(:detector_rail)
         #debug "Detector rail detected - chest moving #{moving_direction}"

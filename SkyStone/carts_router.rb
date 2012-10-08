@@ -22,8 +22,6 @@ module SkyStone
             button = event.get_clicked_block.get_state.get_data
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
 
-            #if there's a lapis_block adjacent the attached block
-            #if attached.block_at_real(:down).is?(:lapis_block)
             if org::bukkit::block::Block.fetch_from(attached, :lapis_block)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
@@ -44,8 +42,6 @@ module SkyStone
     end
 
     def check(block, cart, from, moving_direction)
-      # base is event's base block (likely a powered rails)
-      # for balancing it could be better to have a detector rails in front of the powered and have that trigger it?
 
       if block.is?(:detector_rail)
         #debug "Detector rail detected - player moving #{moving_direction}"
