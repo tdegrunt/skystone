@@ -30,11 +30,16 @@ module SkyStone
           #debug "Controlblock detected - chest moving #{moving_direction}"
 
           if first_chest_block = find_and_return(:chest, base)
-            debug "Chest detected - we have a filter"
+            #debug "Chest detected - we have a filter"
 
             (0..10).each do |pos|
               chest_block = first_chest_block.block_at_real(:up, pos)
-              check_and_move(chest_block, cart, pos)
+              if chest_block.is?(:chest)
+                check_and_move(chest_block, cart, pos)
+              else 
+                #debug "found #{pos} chests"
+                break
+              end
             end
 
           end
@@ -48,7 +53,7 @@ module SkyStone
         inventory = chest.get_inventory
         if first_item = inventory.get_item(0)
           move_what = first_item.get_type.to_string.downcase.to_sym
-          debug "moving #{move_what}"
+          #debug "moving #{move_what}"
           Inventory.move_items(cart.get_inventory, inventory, move_what)
         end
       end

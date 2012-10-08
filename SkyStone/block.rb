@@ -16,4 +16,16 @@ module org::bukkit::block::Block
     block_at_real(wind, distance)
   end
 
+  def to_sym
+    get_type.to_string.downcase.to_sym
+  end
+  
+  def to_string
+    if self.respond_to? :get_type_id
+      "#{get_type_id}:#{get_data}"
+    else
+      "#{get_item_type_id}:#{get_data}"
+    end
+  end
+
 end

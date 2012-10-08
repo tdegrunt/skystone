@@ -39,7 +39,7 @@ class SkyStonePlugin
       when :eval
         eval arguments.join(" ")
       when :inspect
-        player.msg "#{player.target_block.inspect}/#{player.target_block.get_data}"
+        player.msg "#{player.target_block.to_sym} - #{player.target_block.to_string}"
       when :route
         @carts_router.cmd(player, arguments)
       when :storage
