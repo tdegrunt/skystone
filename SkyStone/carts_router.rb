@@ -1,5 +1,6 @@
 require_relative 'orientation'
 require_relative 'vehicle_move_event'
+require_relative 'block'
 
 module SkyStone
   class CartsRouter
@@ -23,7 +24,7 @@ module SkyStone
 
             #if there's a lapis_block adjacent the attached block
             #if attached.block_at_real(:down).is?(:lapis_block)
-            if find_and_return(:lapis_block, attached)
+            if org::bukkit::block::Block.fetch_from(attached, :lapis_block)
               destination = string_from_block(attached)
               player_route[event.player.name] = destination
               event.player.msg "You've selected destination: #{destination_name(destination)}/'#{destination_name(destination, true)}'"

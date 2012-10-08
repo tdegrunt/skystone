@@ -27,5 +27,24 @@ module org::bukkit::block::Block
       "#{get_item_type_id}:#{get_data}"
     end
   end
+  
+  class << self
+    def fetch_from(block, type)
+      case
+      when block.block_at_real(:north) && block.block_at_real(:north).is?(type)
+        block.block_at_real(:north)
+      when block.block_at_real(:east) && block.block_at_real(:east).is?(type)
+        block.block_at_real(:east)
+      when block.block_at_real(:south) && block.block_at_real(:south).is?(type)
+        block.block_at_real(:south)
+      when block.block_at_real(:west) && block.block_at_real(:west).is?(type)
+        block.block_at_real(:west)
+      when block.block_at_real(:up) && block.block_at_real(:up).is?(type)
+        block.block_at_real(:up)
+      when block.block_at_real(:down) && block.block_at_real(:down).is?(type)
+        block.block_at_real(:down)
+      end
+    end
+  end
 
 end

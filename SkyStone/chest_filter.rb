@@ -1,6 +1,7 @@
 require_relative 'orientation'
 require_relative 'vehicle_move_event'
 require_relative 'inventory'
+require_relative 'block'
 
 module SkyStone
   class ChestFilter
@@ -26,10 +27,10 @@ module SkyStone
         #debug "Detector rail detected - chest moving #{moving_direction}"
         base = block
 
-        if control_block = find_and_return(:lapis_block, base)
+        if control_block = org::bukkit::block::Block.fetch_from(base, :lapis_block)
           #debug "Controlblock detected - chest moving #{moving_direction}"
 
-          if first_chest_block = find_and_return(:chest, base)
+          if first_chest_block = org::bukkit::block::Block.fetch_from(base, :chest)
             #debug "Chest detected - we have a filter"
 
             (0..10).each do |pos|

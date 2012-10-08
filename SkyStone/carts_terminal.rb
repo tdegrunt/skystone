@@ -46,7 +46,7 @@ module SkyStone
             end
 
             if dispenser
-              if control_block = find_and_return(:lapis_block, dispenser.block_at_real(:down))
+              if control_block = org::bukkit::block::Block.fetch_from(dispenser.block_at_real(:down), :lapis_block)
 
                 if control_block.block_at_real(:up).is?(:powered_rail)
                   powered_rail = control_block.block_at_real(:up)
@@ -90,10 +90,10 @@ module SkyStone
         #debug "Powered rail detected - player moving #{moving_direction}"
         base = block
 
-        if control_block = find_and_return(:lapis_block, base)
+        if control_block = org::bukkit::block::Block.fetch_from(base, :lapis_block)
           #debug "Controlblock detected - player moving #{moving_direction}"
 
-          if dispenser_block = find_and_return(:dispenser, base)
+          if dispenser_block = org::bukkit::block::Block.fetch_from(base, :dispenser)
             dispenser = dispenser_block.get_state
             #debug "Dispenser detected - we have a terminal"
             #dispenser.dispense
@@ -122,23 +122,6 @@ module SkyStone
         end
       end
 
-    end
-
-    def find_and_return(type, block)
-      case
-      when block.block_at_real(:north) && block.block_at_real(:north).is?(type)
-        block.block_at_real(:north)
-      when block.block_at_real(:east) && block.block_at_real(:east).is?(type)
-        block.block_at_real(:east)
-      when block.block_at_real(:south) && block.block_at_real(:south).is?(type)
-        block.block_at_real(:south)
-      when block.block_at_real(:west) && block.block_at_real(:west).is?(type)
-        block.block_at_real(:west)
-      when block.block_at_real(:up) && block.block_at_real(:up).is?(type)
-        block.block_at_real(:up)
-      when block.block_at_real(:down) && block.block_at_real(:down).is?(type)
-        block.block_at_real(:down)
-      end
     end
 
     def debug(text)
