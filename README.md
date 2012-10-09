@@ -47,6 +47,13 @@ The plugin supports the following command to set the route:
 
 - Fix for players using the wrong side (left) of the rails
 
+## Two way terminal
+Two-way terminal with AFK auto-pause-and-continue on rails
+
 ## Storage & sorting
-- Auto sorter using minecarts
+Auto sorter using minecarts
+
+## Power booster
+Power booster for minecarts
+
 
