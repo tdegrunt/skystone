@@ -4,7 +4,6 @@ $:.unshift(File.expand_path(File.dirname(__FILE__))) unless $:.include?(File.dir
 require_relative 'SkyStone/plugin'
 require_relative 'SkyStone/item_stack'
 require_relative 'SkyStone/inventory'
-require_relative 'SkyStone/storage_cart_system'
 require_relative 'SkyStone/carts_router'
 require_relative 'SkyStone/carts_terminal'
 require_relative 'SkyStone/chest_filter'
@@ -25,7 +24,6 @@ class SkyStonePlugin
     end
 
     # Somehow I need this self or my server chokes - Plugin.instance doesn't do the trick
-    @storage_cart_system = SkyStone::StorageCartSystem.new(self)
     @carts_router = SkyStone::CartsRouter.new(self)
     @carts_terminal = SkyStone::CartsTerminal.new(self)
     @chest_filter = SkyStone::ChestFilter.new(self)
@@ -52,15 +50,12 @@ class SkyStonePlugin
 
   def force_reload!
     load 'SkyStone/plugin.rb'
-    load 'SkyStone/storage_cart_system.rb'
     load 'SkyStone/carts_router.rb'
     load 'SkyStone/carts_terminal.rb'
     load 'SkyStone/chest_filter.rb'
-    load 'SkyStone/system_block.rb'
     load 'SkyStone/inventory.rb'
     load 'SkyStone/item_stack.rb'
     load 'SkyStone/block.rb'
-    load 'SkyStone/transceiver.rb'
     load 'SkyStone/orientation.rb'
     load 'SkyStone/vehicle_move_event.rb'
   end
