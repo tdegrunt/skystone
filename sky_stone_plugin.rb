@@ -7,6 +7,7 @@ require_relative 'SkyStone/inventory'
 require_relative 'SkyStone/carts_router'
 require_relative 'SkyStone/carts_terminal'
 require_relative 'SkyStone/chest_filter'
+require_relative 'SkyStone/cart_power_booster.rb'
 
 class SkyStonePlugin
   include Purugin::Plugin, Purugin::Colors
@@ -27,6 +28,7 @@ class SkyStonePlugin
     @carts_router = SkyStone::CartsRouter.new(self)
     @carts_terminal = SkyStone::CartsTerminal.new(self)
     @chest_filter = SkyStone::ChestFilter.new(self)
+    @cart_power_booster = SkyStone::CartPowerBooster.new(self)
   end
 
   private
@@ -49,14 +51,15 @@ class SkyStonePlugin
   end
 
   def force_reload!
-    load 'SkyStone/plugin.rb'
-    load 'SkyStone/carts_router.rb'
-    load 'SkyStone/carts_terminal.rb'
-    load 'SkyStone/chest_filter.rb'
     load 'SkyStone/inventory.rb'
     load 'SkyStone/item_stack.rb'
     load 'SkyStone/block.rb'
     load 'SkyStone/orientation.rb'
     load 'SkyStone/vehicle_move_event.rb'
+    load 'SkyStone/plugin.rb'
+    load 'SkyStone/carts_router.rb'
+    load 'SkyStone/carts_terminal.rb'
+    load 'SkyStone/chest_filter.rb'
+    load 'SkyStone/cart_power_booster.rb'
   end
 end
