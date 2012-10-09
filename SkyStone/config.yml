@@ -6,7 +6,7 @@ carts:
         name: Main station
         short: white
       '35:1':
-        name: Sheep Farm
+        name: Sheep farm
         short: orange
       '35:2':
         name: Magenta station
@@ -36,7 +36,7 @@ carts:
         name: Purple station
         short: purple
       '35:11':
-        name: Blue station
+        name: Central station
         short: blue
       '35:12':
         name: Brown station
