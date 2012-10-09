@@ -19,7 +19,7 @@ module SkyStone
       plugin.event(:player_interact) do |event|
         if event.respond_to?(:get_clicked_block) && event.get_clicked_block
           if event.get_clicked_block.is?(:stone_button)
-            button = event.get_clicked_block.get_state.get_data
+            button = event.get_clicked_block.normalize
             attached = event.get_clicked_block.get_relative(button.get_attached_face)
 
             if org::bukkit::block::Block.fetch_from(attached, :lapis_block)

@@ -21,7 +21,7 @@ module SkyStone
 
     def check(block, cart, from, moving_direction)
 
-      if block.is?(:powered_rail) && block.get_state.get_data.is_powered
+      if block.is?(:powered_rail) && block.normalize.is_powered
         base = block
 
         if org::bukkit::block::Block.fetch_from(base, :lapis_block)

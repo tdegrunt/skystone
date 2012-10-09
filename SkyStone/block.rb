@@ -27,6 +27,10 @@ module org::bukkit::block::Block
       "#{get_item_type_id}:#{get_data}"
     end
   end
+
+  def normalize
+    get_state.get_data
+  end
   
   class << self
     def fetch_from(block, type)
